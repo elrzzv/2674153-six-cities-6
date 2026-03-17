@@ -1,10 +1,10 @@
 import CitiesCart from './CitiesCart';
 
-type HomePageProps = {
+type MainProps = {
   offersNumber: number;
 }
 
-function HomePage({ offersNumber }: HomePageProps): JSX.Element {
+function Main({ offersNumber }: MainProps): JSX.Element {
 
   const CitiesCarts: JSX.Element = (
     <>
@@ -119,4 +119,4 @@ function HomePage({ offersNumber }: HomePageProps): JSX.Element {
   );
 }
 
-export default HomePage;
+export default Main;
