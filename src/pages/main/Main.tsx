@@ -1,3 +1,5 @@
+import { Helmet } from 'react-helmet-async';
+
 import CitiesCart from './CitiesCart';
 
 type MainProps = {
@@ -18,6 +20,11 @@ function Main({ offersNumber }: MainProps): JSX.Element {
 
   return (
     <div className="page page--gray page--main">
+
+      <Helmet>
+        <title>6 cities</title>
+      </Helmet>
+
       <header className="header">
         <div className="container">
           <div className="header__wrapper">

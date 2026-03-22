@@ -2,14 +2,16 @@ import { Navigate } from 'react-router-dom';
 import { AuthorizationStatus, Paths } from '../../const';
 
 type PrivatePageProps = {
-  authStatus: AuthorizationStatus;
+  restrictedFor: AuthorizationStatus;
+  redirectTo: Paths;
   children: JSX.Element;
 }
 
-export default function PrivatePage({ authStatus, children }: PrivatePageProps): JSX.Element {
+export default function PrivatePage({restrictedFor, redirectTo , children }: PrivatePageProps): JSX.Element {
+  const authStatus = AuthorizationStatus.NoAuth;
   return (
-    authStatus === AuthorizationStatus.Auth
+    authStatus === restrictedFor
       ? children
-      : <Navigate to={Paths.Login} />
+      : <Navigate to={redirectTo} />
   );
 }
