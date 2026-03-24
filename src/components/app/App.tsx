@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
+import { offersType } from '../../mock/offers';
 import { Paths, AuthorizationStatus } from '../../const';
 import Main from '../../pages/main/Main';
 import Offer from '../../pages/offer/Offer';
@@ -11,15 +12,16 @@ import NotFound from '../../pages/not-found/NotFound';
 
 type AppProps = {
   offersNumber: number;
+  offers: offersType;
 }
 
-export default function App({ offersNumber }: AppProps): JSX.Element {
+export default function App({ offersNumber, offers }: AppProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path={Paths.Main} element={<Main offersNumber={offersNumber} />} />
-          <Route path={Paths.Offer} element={<Offer />} />
+          <Route path={Paths.Main} element={<Main offersNumber={offersNumber} offers={offers} />} />
+          <Route path={`${Paths.Offer}/:offerId`} element={<Offer offers={offers} />} />
           <Route path={Paths.Login} element=
             {
               <PrivatePage restrictedFor={AuthorizationStatus.Auth} redirectTo={Paths.Main}>
@@ -30,7 +32,7 @@ export default function App({ offersNumber }: AppProps): JSX.Element {
           <Route path={Paths.Favorites} element=
             {
               <PrivatePage restrictedFor={AuthorizationStatus.NoAuth} redirectTo={Paths.Login}>
-                <Favorites />
+                <Favorites offers={offers} />
               </PrivatePage>
             }
           />
