@@ -1,18 +1,18 @@
 import { Link } from 'react-router-dom';
-import { offerType } from '../../mock/offers';
+import { TOffer } from '../../types';
 import { Paths } from '../../const';
 
-type CitiesCardProps ={
-  offer: offerType;
-  onCardHover?: (offerId: string | null) => void;
+type CitiesCardProps = {
+  offer: TOffer;
+  onCardHover?: (itemName: string | null) => void;
 }
 
-export default function CitiesCard({offer, onCardHover} : CitiesCardProps): JSX.Element {
+export default function CitiesCard({ offer, onCardHover }: CitiesCardProps): JSX.Element {
 
   return (
     <article className="cities__card place-card"
       onMouseOver={() => {
-        onCardHover?.(offer.id);
+        onCardHover?.(offer.title);
       }}
       onMouseOut={() => {
         onCardHover?.(null);

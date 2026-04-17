@@ -1,30 +1,6 @@
-export type offerType = {
-  id: string;
-  title: string;
-  type: string;
-  price: number;
-  city: {
-    name: string;
-    location: {
-      latitude: number;
-      longitude: number;
-      zoom: number;
-    };
-  };
-  location: {
-    latitude: number;
-    longitude: number;
-    zoom: number;
-  };
-  isFavorite: boolean;
-  isPremium: boolean;
-  rating: number;
-  previewImage: string;
-};
+import { TOffer } from '../types';
 
-export type offersType = offerType[];
-
-export const offers: offersType = [
+export const offers: TOffer[] = [
   {
     id: '6af6f711-c28d-4121-82cd-e0b462a27f00',
     title: 'Beautiful & luxurious studio at great location',
@@ -116,5 +92,28 @@ export const offers: offersType = [
     isPremium: true,
     rating: 4,
     previewImage: 'img/apartment-03.jpg'
+  }
+];
+
+export const POINTS = [
+  {
+    title: 'Beautiful & luxurious studio at great location',
+    lat: 52.3909553943508,
+    lng: 4.85309666406198
+  },
+  {
+    title: 'Wood and stone place',
+    lat: 52.3609553943508,
+    lng: 4.85309666406198
+  },
+  {
+    title: 'Canal View Prinsengracht',
+    lat: 52.3909553943508,
+    lng: 4.929309666406198
+  },
+  {
+    title: 'Nice, cozy, warm big bed apartment',
+    lat: 52.3809553943508,
+    lng: 4.939309666406198
   }
 ];
