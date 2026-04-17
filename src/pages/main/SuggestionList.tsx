@@ -1,22 +1,22 @@
-import { offersType } from '../../mock/offers';
+import { TOffer } from '../../types';
 import CitiesCard from './CitiesCard';
 
 type SuggestionListProps = {
   offersNumber: number;
-  offers: offersType;
-  setHoveredCardId?: (offerId: string | null) => void;
+  offers: TOffer[];
+  onCardHover?: (itemName: string | null) => void;
 }
 
-export default function SuggestionList({offersNumber, offers, setHoveredCardId} : SuggestionListProps) : JSX.Element {
-
-  const handleCardHover = (offerId: string | null) => {
-    setHoveredCardId?.(offerId);
-  };
-
-  return(
+export default function SuggestionList({ offersNumber, offers, onCardHover }: SuggestionListProps): JSX.Element {
+  return (
     <div className="cities__places-list places__list tabs__content">
-      {offers.map((o, ind) => (
-        ind < offersNumber ? <CitiesCard offer={o} onCardHover={handleCardHover} key={o.id} /> : null
+      {offers.map((o, i) => (
+        (i < offersNumber) &&
+        <CitiesCard
+          offer={o}
+          onCardHover={onCardHover}
+          key={o.id}
+        />
       ))}
     </div>
   );

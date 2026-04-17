@@ -1,17 +1,30 @@
 import { Helmet } from 'react-helmet-async';
-
-import { offersType } from '../../mock/offers';
-import SuggestionList from './SuggestionList';
-import Header from '../../components/header/Header';
 import { useState } from 'react';
+
+import { TOffer, TPoint } from '../../types';
+import { allCities, CITY } from '../../mock/cities';
+import { POINTS } from '../../mock/offers';
+import SuggestionList from './SuggestionList';
+import Map from './Map';
+import Header from '../../components/header/Header';
 
 type MainProps = {
   offersNumber: number;
-  offers: offersType;
-}
+  offers: TOffer[];
+};
 
 function Main({ offersNumber, offers }: MainProps): JSX.Element {
-  const [hoveredCardId, setHoverdCardId] = useState<string | null>(null);
+  const [selectedPoint, setSelectedPoint] = useState<TPoint | null>(null);
+
+  const handleCardHover = (itemName: string | null) => {
+    if (!itemName) {
+      setSelectedPoint(null);
+    }
+    const currentPoint = POINTS.find((point) =>
+      point.title === itemName,
+    );
+    setSelectedPoint(currentPoint as TPoint);
+  };
 
   return (
     <div className="page page--gray page--main">
@@ -27,36 +40,16 @@ function Main({ offersNumber, offers }: MainProps): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+              {
+                allCities.map((city, i) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <li key={i} className="locations__item">
+                    <a className="locations__item-link tabs__item" href="#">
+                      <span>{city}</span>
+                    </a>
+                  </li>
+                ))
+              }
             </ul>
           </section>
         </div>
@@ -81,12 +74,19 @@ function Main({ offersNumber, offers }: MainProps): JSX.Element {
                 </ul>
               </form>
 
-              <SuggestionList offersNumber={offersNumber} offers={offers} setHoveredCardId={setHoverdCardId} />
+              <SuggestionList
+                offersNumber={offersNumber}
+                offers={offers}
+                onCardHover={handleCardHover}
+              />
 
             </section>
-            <div className="cities__right-section">
-              <section className="cities__map map" ></section>
-            </div>
+
+            <Map
+              city={CITY}
+              points={POINTS}
+              selectedPoint={selectedPoint}
+            />
           </div>
         </div>
       </main>
