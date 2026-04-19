@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import leaflet from 'leaflet';
+import { Icon, layerGroup, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import { TCity, TPoint } from '../../types';
@@ -12,44 +12,63 @@ type MapProps = {
   selectedPoint: TPoint | null;
 }
 
-function Map({ city, points, selectedPoint }: MapProps): JSX.Element {
+type TIconConfig = {
+  url: string;
+  width: number;
+  height: number;
+  anchorX: number;
+  anchorY: number;
+}
+
+const defaultCastomIcon: TIconConfig = {
+  url: URL_MARKER_DEFAULT,
+  width: 40,
+  height: 40,
+  anchorX: 20,
+  anchorY: 40,
+};
+
+const currentCustomIcon: TIconConfig = {
+  url: URL_MARKER_CURRENT,
+  width: 40,
+  height: 40,
+  anchorX: 20,
+  anchorY: 40,
+};
+
+function createIcon(config: TIconConfig) {
+  return new Icon({
+    iconUrl: config.url,
+    iconSize: [config.width, config.height],
+    iconAnchor: [config.anchorX, config.anchorY]
+  });
+}
+
+export default function Map({ city, points, selectedPoint }: MapProps): JSX.Element {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const map = useMap(mapRef, city);
 
   useEffect(() => {
-    const defaultCustomIcon = leaflet.icon({
-      iconUrl: URL_MARKER_DEFAULT,
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-    });
-
-    const currentCustomIcon = leaflet.icon({
-      iconUrl: URL_MARKER_CURRENT,
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-    });
-
     if (map) {
+      map.setView([city.lat, city.lng], city.zoom);
+    }
+  }, [map, city]);
+
+  useEffect(() => {
+    if (map) {
+      const markerLayer = layerGroup().addTo(map);
+
       points.forEach((point) => {
-        if (selectedPoint && selectedPoint.title === point.title) {
-          leaflet
-            .marker({
-              lat: point.lat,
-              lng: point.lng,
-            }, {
-              icon: currentCustomIcon,
-            })
-            .addTo(map);
-        } else {
-          leaflet
-            .marker({
-              lat: point.lat,
-              lng: point.lng,
-            }, {
-              icon: defaultCustomIcon,
-            })
-            .addTo(map);
-        }
+        const marker = new Marker({
+          lat: point.lat,
+          lng: point.lng
+        });
+
+        marker.setIcon(
+          (selectedPoint && selectedPoint.title === point.title)
+            ? createIcon(currentCustomIcon)
+            : createIcon(defaultCastomIcon)
+        ).addTo(markerLayer);
       });
     }
   }, [map, points, selectedPoint]);
@@ -62,5 +81,3 @@ function Map({ city, points, selectedPoint }: MapProps): JSX.Element {
     />
   );
 }
-
-export default Map;
