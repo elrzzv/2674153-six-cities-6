@@ -7,9 +7,10 @@ import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import useMap from '../../hooks/useMap';
 
 type MapProps = {
+  block?: string;
   city: TCity;
   points: TPoint[];
-  selectedPoint: TPoint | null;
+  selectedPoint?: TPoint | null;
 }
 
 type TIconConfig = {
@@ -44,8 +45,8 @@ function createIcon(config: TIconConfig) {
   });
 }
 
-export default function Map({ city, points, selectedPoint }: MapProps): JSX.Element {
-  const mapRef = useRef<HTMLDivElement | null>(null);
+export default function Map({ block, city, points, selectedPoint}: MapProps): JSX.Element {
+  const mapRef = useRef<HTMLElement | null>(null);
   const map = useMap(mapRef, city);
 
   useEffect(() => {
@@ -74,10 +75,8 @@ export default function Map({ city, points, selectedPoint }: MapProps): JSX.Elem
   }, [map, points, selectedPoint]);
 
   return (
-    <div
-      style={{ height: '500px', width: '200px' }}
-      ref={mapRef}
-      className="cities__right-section cities__map map"
+    <section
+      className={`${block}__map map`} ref={mapRef}
     />
   );
 }

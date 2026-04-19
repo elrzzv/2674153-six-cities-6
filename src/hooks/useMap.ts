@@ -4,7 +4,7 @@ import { TCity } from '../types';
 import { TILE_LAYER, COPYRIGHT } from '../const';
 
 export default function useMap(
-  mapRef: React.RefObject<HTMLDivElement> | null,
+  mapRef: React.RefObject<HTMLElement> | null,
   city: TCity
 ): Map | null {
   const [map, setMap] = useState<Map | null>(null);
