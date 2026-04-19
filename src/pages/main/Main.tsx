@@ -5,7 +5,7 @@ import { TOffer, TPoint } from '../../types';
 import { allCities, CITY } from '../../mock/cities';
 import { POINTS } from '../../mock/offers';
 import SuggestionList from './SuggestionList';
-import Map from './Map';
+import Map from '../../components/map/Map';
 import Header from '../../components/header/Header';
 
 type MainProps = {
@@ -82,11 +82,16 @@ function Main({ offersNumber, offers }: MainProps): JSX.Element {
 
             </section>
 
-            <Map
-              city={CITY}
-              points={POINTS}
-              selectedPoint={selectedPoint}
-            />
+            <section className="cities__right-section">
+              <Map
+                city={CITY}
+                points={POINTS}
+                selectedPoint={selectedPoint}
+                block='cities'
+              />
+            </section>
+
+
           </div>
         </div>
       </main>

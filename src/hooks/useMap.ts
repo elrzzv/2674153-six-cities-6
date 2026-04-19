@@ -1,9 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
-import leaflet from 'leaflet';
+import leaflet, { Map, TileLayer } from 'leaflet';
 import { TCity } from '../types';
+import { TILE_LAYER, COPYRIGHT } from '../const';
 
-function useMap(mapRef: React.RefObject<HTMLDivElement> | null, city: TCity) {
-  const [map, setMap] = useState<leaflet.Map | null>(null);
+export default function useMap(
+  mapRef: React.RefObject<HTMLElement> | null,
+  city: TCity
+): Map | null {
+  const [map, setMap] = useState<Map | null>(null);
   const isRenderedRef = useRef(false);
 
   useEffect(() => {
@@ -16,14 +20,11 @@ function useMap(mapRef: React.RefObject<HTMLDivElement> | null, city: TCity) {
         zoom: city.zoom,
       });
 
-      leaflet
-        .tileLayer(
-          'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-          {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-          },
-        )
-        .addTo(instance);
+      const layer = new TileLayer(TILE_LAYER, {
+        attribution: COPYRIGHT
+      });
+
+      instance.addLayer(layer);
 
       setMap(instance);
       isRenderedRef.current = true;
@@ -32,5 +33,3 @@ function useMap(mapRef: React.RefObject<HTMLDivElement> | null, city: TCity) {
 
   return map;
 }
-
-export default useMap;
